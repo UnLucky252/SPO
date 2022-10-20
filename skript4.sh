@@ -1,41 +1,43 @@
 #!/bin/bash
 
-for ((i=$1/2; i >= 0; i--))
-do
-	for ((k=0; k < $i; k++)) 
-	do 
-		echo -n " "
-	done
-	
-	let "a=$1 - 2*$i"
-	if (($a < 1))
-	then
-		a=$a+1
-	fi
-	for ((j=0; j < $a; j++))
-	do
-		echo -n "."
-	done	
-	echo " "	
-done
+echo "Write your number: "
+read number
 
-for ((i=1; i < $1/2+1; i++))
-do
-	for ((k=0; k < $i; k++))
-	do
+#Checking for the presence of an integer
+int_regex='^[0-9]+$'
+if ! [[ $number =~ $int_regex ]]; then
+	echo "Error: Write integer number"
+	exit 1
+fi
+
+max_size=$number
+#First half of the rhomb
+top=1
+for ((i=0; i<"$number"; i++)) {
+	for ((j=0; j<(($number-top)); j++)) { 
 		echo -n " "
-	done
-	let "a=$1-2*$i"
-	if (($a < 1))
-	then
-		a=$a+1
-	fi
-	for ((j=0; j < $a; j++))
-	do
-		echo -n "."
-	done
+	}
+	
+	for ((k=0; k<top; k++)) {
+		echo -n ". "
+	}	
+	echo " "	
+	top=$(($top+1))
+}
+
+#Second half of the rhomb
+lowland=$((max_size-1))
+for ((i=0; i<=(($number-1)); i++)) {
+	for ((j=0; j<((max_size-lowland)); j++)) {
+		echo -n " "
+	}
+	
+	for ((k=0; k<lowland; k++)) {
+		echo -n ". "
+	}
 	echo " "
-done
+	lowland=$(($lowland-1))
+}
 
 exit 0
 
